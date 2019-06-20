@@ -30,6 +30,7 @@
 
 @protocol VIResourceLoaderManagerDelegate <NSObject>
 
+- (void)resourceLoaderManager:(VIResourceLoaderManager *)manager willSendRequest:(NSMutableURLRequest *)request;
 - (void)resourceLoaderManagerLoadURL:(NSURL *)url didFailWithError:(NSError *)error;
 
 @end

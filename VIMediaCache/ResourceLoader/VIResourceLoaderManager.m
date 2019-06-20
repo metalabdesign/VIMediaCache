@@ -68,6 +68,12 @@ static NSString *kCacheScheme = @"__VIMediaCache___:";
 
 #pragma mark - VIResourceLoaderDelegate
 
+- (void)resourceLoader:(VIResourceLoader *)resourceLoader willSendRequest:(NSMutableURLRequest *)request {
+    if ([self.delegate respondsToSelector:@selector(resourceLoaderManager:willSendRequest:)]) {
+        [self.delegate resourceLoaderManager:self willSendRequest:request];
+    }
+}
+
 - (void)resourceLoader:(VIResourceLoader *)resourceLoader didFailWithError:(NSError *)error {
     [resourceLoader cancel];
     if ([self.delegate respondsToSelector:@selector(resourceLoaderManagerLoadURL:didFailWithError:)]) {

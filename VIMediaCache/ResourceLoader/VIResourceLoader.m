@@ -79,6 +79,12 @@ NSString * const MCResourceLoaderErrorDomain = @"LSFilePlayerResourceLoaderError
 
 #pragma mark - VIResourceLoadingRequestWorkerDelegate
 
+- (void)resourceLoadingRequestWorker:(VIResourceLoadingRequestWorker *)requestWorker willSendRequest:(NSMutableURLRequest *)request {
+    if ([self.delegate respondsToSelector:@selector(resourceLoader:willSendRequest:)]) {
+        [self.delegate resourceLoader:self willSendRequest:request];
+    }
+}
+
 - (void)resourceLoadingRequestWorker:(VIResourceLoadingRequestWorker *)requestWorker didCompleteWithError:(NSError *)error {
     [self removeRequest:requestWorker.request];
     if (error && [self.delegate respondsToSelector:@selector(resourceLoader:didFailWithError:)]) {

@@ -26,6 +26,7 @@
 
 @protocol VIResourceLoaderDelegate <NSObject>
 
+- (void)resourceLoader:(VIResourceLoader *)resourceLoader willSendRequest:(NSMutableURLRequest *)request;
 - (void)resourceLoader:(VIResourceLoader *)resourceLoader didFailWithError:(NSError *)error;
 
 @end

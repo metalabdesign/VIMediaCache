@@ -82,6 +82,12 @@
 
 #pragma mark - VIMediaDownloaderDelegate
 
+- (void)mediaDownloader:(VIMediaDownloader *)downloader willSendRequest:(NSMutableURLRequest *)request {
+    if ([self.delegate respondsToSelector:@selector(resourceLoadingRequestWorker:willSendRequest:)]) {
+        [self.delegate resourceLoadingRequestWorker:self willSendRequest:request];
+    }
+}
+
 - (void)mediaDownloader:(VIMediaDownloader *)downloader didReceiveResponse:(NSURLResponse *)response {
     [self fullfillContentInfo];
 }

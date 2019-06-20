@@ -47,6 +47,7 @@
 @protocol VIMediaDownloaderDelegate <NSObject>
 
 @optional
+- (void)mediaDownloader:(VIMediaDownloader *)downloader willSendRequest:(NSMutableURLRequest *)request;
 - (void)mediaDownloader:(VIMediaDownloader *)downloader didReceiveResponse:(NSURLResponse *)response;
 - (void)mediaDownloader:(VIMediaDownloader *)downloader didReceiveData:(NSData *)data;
 - (void)mediaDownloader:(VIMediaDownloader *)downloader didFinishedWithError:(NSError *)error;

@@ -96,6 +96,7 @@ didCompleteWithError:(nullable NSError *)error {
 
 @protocol VIActionWorkerDelegate <NSObject>
 
+- (void)actionWorker:(VIActionWorker *)actionWorker willSendRequest:(NSMutableURLRequest *)request;
 - (void)actionWorker:(VIActionWorker *)actionWorker didReceiveResponse:(NSURLResponse *)response;
 - (void)actionWorker:(VIActionWorker *)actionWorker didReceiveData:(NSData *)data isLocal:(BOOL)isLocal;
 - (void)actionWorker:(VIActionWorker *)actionWorker didFinishWithError:(NSError *)error;
@@ -211,6 +212,9 @@ didCompleteWithError:(nullable NSError *)error {
         request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
         NSString *range = [NSString stringWithFormat:@"bytes=%lld-%lld", fromOffset, endOffset];
         [request setValue:range forHTTPHeaderField:@"Range"];
+        if ([self.delegate respondsToSelector:@selector(actionWorker:willSendRequest:)]) {
+            [self.delegate actionWorker:self willSendRequest:request];
+        }
         self.startOffset = action.range.location;
         self.task = [self.session dataTaskWithRequest:request];
         [self.task resume];
@@ -438,6 +442,12 @@ didCompleteWithError:(nullable NSError *)error {
 }
 
 #pragma mark - VIActionWorkerDelegate
+
+- (void)actionWorker:(VIActionWorker *)actionWorker willSendRequest:(NSMutableURLRequest *)request {
+    if ([self.delegate respondsToSelector:@selector(mediaDownloader:willSendRequest:)]) {
+        [self.delegate mediaDownloader:self willSendRequest:request];
+    }
+}
 
 - (void)actionWorker:(VIActionWorker *)actionWorker didReceiveResponse:(NSURLResponse *)response {
     if (!self.info) {

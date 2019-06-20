@@ -27,6 +27,7 @@
 
 @protocol VIResourceLoadingRequestWorkerDelegate <NSObject>
 
+- (void)resourceLoadingRequestWorker:(VIResourceLoadingRequestWorker *)requestWorker willSendRequest:(NSMutableURLRequest *)request;
 - (void)resourceLoadingRequestWorker:(VIResourceLoadingRequestWorker *)requestWorker didCompleteWithError:(NSError *)error;
 
 @end
