@@ -377,6 +377,7 @@ didCompleteWithError:(nullable NSError *)error {
 @interface VIMediaDownloader () <VIActionWorkerDelegate>
 
 @property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, strong) NSURLSessionDataTask *task;
 
 @property (nonatomic, strong) VIMediaCacheWorker *cacheWorker;
@@ -416,7 +417,8 @@ didCompleteWithError:(nullable NSError *)error {
     
     NSArray *actions = [self.cacheWorker cachedDataActionsForRange:range];
 
-    self.actionWorker = [[VIActionWorker alloc] initWithActions:actions url:self.url cacheWorker:self.cacheWorker];
+    NSURL *url = self.currentURL ?: self.url;
+    self.actionWorker = [[VIActionWorker alloc] initWithActions:actions url:url cacheWorker:self.cacheWorker];
     self.actionWorker.canSaveToCache = self.saveToCache;
     self.actionWorker.delegate = self;
     [self.actionWorker start];
@@ -450,6 +452,8 @@ didCompleteWithError:(nullable NSError *)error {
 }
 
 - (void)actionWorker:(VIActionWorker *)actionWorker didReceiveResponse:(NSURLResponse *)response {
+    self.currentURL = response.URL;
+
     if (!self.info) {
         VIContentInfo *info = [VIContentInfo new];
         
